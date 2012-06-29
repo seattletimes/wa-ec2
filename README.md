@@ -8,6 +8,14 @@ To connect (ssh):
 ssh -i path/to/file.pem bitnami@ec2-184-169-246-7.us-west-1.compute.amazonaws.com
 ```
 
+Connect to phpMyAdmin:
+```
+ssh -N -L 8888:127.0.0.1:80 -i ~/desktop/timeline.pem bitnami@ec2-184-169-246-7.us-west-1.compute.amazonaws.com
+```
+Browse to http://127.0.0.1:8888/phpmyadmin/index.php
+
+
+
 ## Software that comes with the image
 
 ### BitNami LAMP stack
