@@ -30,6 +30,7 @@ Browse to http://127.0.0.1:8888/phpmyadmin/index.php
 - pip
 - python-dev
 - virtualenv
+- mysql-python
 - csvkit
 
 ### GEOS
@@ -41,6 +42,7 @@ Browse to http://127.0.0.1:8888/phpmyadmin/index.php
 - CodeIgniter 2.2.1
 - git
 - lynx
+- gdal
 
 APC 3.1.10 may also be installed.
 
@@ -59,7 +61,6 @@ make
 sudo make install
 ```
 
-# Instructions we have not yet followed:
 ## Install dependencies
 
 ```
@@ -106,7 +107,9 @@ exit
 sudo su - postgres
 createdb -T template_postgis wa_boundaryservice
 psql
-GRANT ALL PRIVILEGES ON DATABASE wa_boundaryservice TO ubuntu;
+GRANT ALL PRIVILEGES ON DATABASE wa_boundaryservice TO bitnami;
+GRANT ALL PRIVILEGES ON TABLE spatial_ref_sys TO bitnami;
+GRANT ALL PRIVILEGES ON TABLE geometry_columns TO bitnami;
 ALTER USER ubuntu WITH PASSWORD 'secret password'
 \q
 exit
