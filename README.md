@@ -31,6 +31,7 @@ ssh -i path/to/file.pem bitnami@ec2-184-169-246-7.us-west-1.compute.amazonaws.co
 ### Other
 
 - CodeIgniter 2.2.1
+- git
 - lynx
 
 APC 3.1.10 may also be installed.
