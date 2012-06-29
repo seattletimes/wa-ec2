@@ -2,12 +2,10 @@
 
 ## Tools and Apps dev server
 
-Image: `ami-f3c59db6` Ubuntu 10.04 LTS (Lucid Lynx)
-
 To connect (ssh):
 
 ```
-ssh -i path/to/file.pem ubuntu@ec2-184-169-205-33.us-west-1.compute.amazonaws.com
+ssh -i path/to/file.pem bitnami@ec2-184-169-246-7.us-west-1.compute.amazonaws.com
 ```
 
 ## Install dependencies
