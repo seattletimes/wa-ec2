@@ -8,6 +8,50 @@ To connect (ssh):
 ssh -i path/to/file.pem bitnami@ec2-184-169-246-7.us-west-1.compute.amazonaws.com
 ```
 
+## Software that comes with the image
+
+### BitNami LAMP stack
+
+- Apache 2.2.19
+- MySQL 5.1.56
+- PHP 5.3.8
+- PHPMyAdmin 3.4.4
+
+### Python
+
+- pip
+- python-dev
+- virtualenv
+- csvkit
+
+## GEOS
+
+- geos 3.3.5 (see instructions below)
+
+### Other
+
+- CodeIgniter 2.2.1
+- lynx
+
+APC 3.1.10 may also be installed.
+
+
+# Specific installation instructions
+
+## GEOS
+Installed from source
+```
+wget http://download.osgeo.org/geos/geos-3.3.5.tar.bz2
+tar xjf geos-3.3.5.tar.bz2
+cd geos-3.3.5
+./configure
+make
+sudo make install
+```
+
+
+
+# Instructions we have not yet followed:
 ## Install dependencies
 
 sudo apt-get update
