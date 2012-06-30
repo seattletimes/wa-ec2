@@ -20,4 +20,5 @@ createlang plpgsql template_postgis
 psql -d postgres -c "UPDATE pg_database SET datistemplate='true' WHERE datname='template_postgis';"
 psql -d template_postgis -f /usr/share/postgresql/8.4/contrib/postgis.sql
 psql -d template_postgis -f /usr/share/postgresql/8.4/contrib/spatial_ref_sys.sql
+exit
 
