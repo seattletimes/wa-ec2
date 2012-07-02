@@ -2,19 +2,40 @@
 
 ## Tools and Apps dev server
 
-To connect (ssh):
-
+### To connect (ssh):
 ```
 ssh -i path/to/file.pem bitnami@ec2-184-169-246-7.us-west-1.compute.amazonaws.com
 ```
 
-Connect to phpMyAdmin:
+### To start/stop/status apache2/mysql:
+```
+sudo /opt/bitnami/ctlscript.sh [start|stop|status] [apache|mysql]
+```
+
+Apache conf file located at `opt/bitnami/apache2/conf/httpd.conf`
+
+### To connect to phpMyAdmin:
 ```
 ssh -N -L 8888:127.0.0.1:80 -i ~/desktop/timeline.pem bitnami@ec2-184-169-246-7.us-west-1.compute.amazonaws.com
 ```
 Browse to http://127.0.0.1:8888/phpmyadmin/index.php
 
+### To set up a database for a specific project:
+```
+sudo su - postgres
+createdb -T template_postgis wa_boundaryservice
+psql
+GRANT ALL PRIVILEGES ON DATABASE wa_boundaryservice TO django;
+GRANT ALL PRIVILEGES ON TABLE spatial_ref_sys TO django;
+GRANT ALL PRIVILEGES ON TABLE geometry_columns TO django;
+ALTER USER django WITH PASSWORD 'secret password'
+\q
+exit
+```
 
+### Locations of files:
+httpd.conf: `/opt/bitnami/apache2/conf/httpd.conf`
+cltscript.sh: `/opt/bitnami/ctlscript.sh`
 
 ## Software that comes with the image
 
@@ -32,6 +53,7 @@ Browse to http://127.0.0.1:8888/phpmyadmin/index.php
 - virtualenv
 - mysql-python
 - csvkit
+- gunicorn
 
 ### GEOS
 
@@ -43,13 +65,14 @@ Browse to http://127.0.0.1:8888/phpmyadmin/index.php
 - git
 - lynx
 - gdal
+- apache2-dev
 
 APC 3.1.10 may also be installed.
 
 
-# Specific installation instructions
+## Specific installation instructions
 
-## GEOS
+### GEOS
 Installed from source
 
 ```
@@ -61,7 +84,7 @@ make
 sudo make install
 ```
 
-## Install dependencies
+### Install dependencies
 
 ```
 sudo apt-get update
@@ -89,29 +112,31 @@ sudo easy_install pip
 sudo pip install virtualenv
 ```
 
-## Set up database templates
 
+## Conf settings changes
+Postgres conf file - local authentication via password
+Apache conf file:
 ```
-sudo su - postgres
-createdb -E UTF8 template_postgis
-createlang plpgsql template_postgis
-psql -d postgres -c "UPDATE pg_database SET datistemplate='true' WHERE datname='template_postgis';"
-psql -d template_postgis -f /usr/share/postgresql/8.4/contrib/postgis.sql
-psql -d template_postgis -f /usr/share/postgresql/8.4/contrib/spatial_ref_sys.sql
-exit
-```
+<VirtualHost *:80>
+    WSGIDaemonProcess appjungle.seattletimes.com processes=2 threads=15 display-name=%{GROUP} python-path=/opt/django/wa-boundaryservice:/opt/django/wa-boundaryservice/venv/lib/python2.6/site-packages user=bitnami
+    WSGIProcessGroup appjungle.seattletimes.com
 
-## To set up a database for a specific project
+    WSGIScriptAlias /django/boundaries /opt/django/wa-boundaryservice/waboundaries/wsgi.py
 
-```
-sudo su - postgres
-createdb -T template_postgis wa_boundaryservice
-psql
-GRANT ALL PRIVILEGES ON DATABASE wa_boundaryservice TO bitnami;
-GRANT ALL PRIVILEGES ON TABLE spatial_ref_sys TO bitnami;
-GRANT ALL PRIVILEGES ON TABLE geometry_columns TO bitnami;
-ALTER USER ubuntu WITH PASSWORD 'secret password'
-\q
-exit
+    <Directory /opt/django/wa-boundaryservice/waboundaries>
+        <Files wsgi.py>
+        Order allow,deny
+        Allow from all
+        </Files>
+    </Directory>
+
+    Alias /static/ /opt/django/static/
+
+    <Directory /opt/django/static>
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+</VirtualHost>
 ```
 
