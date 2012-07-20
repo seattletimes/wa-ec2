@@ -30,3 +30,6 @@ cd ..
 sudo rm -rf s3cmd-1.1.0-beta3
 rm s3cmd-1.1.0-beta3.zip
 
+sudo chmod g+w -R /opt/django/
+sudo usermod -a -G admin bitnami
+
