@@ -22,3 +22,11 @@ psql -d template_postgis -f /usr/share/postgresql/8.4/contrib/postgis.sql
 psql -d template_postgis -f /usr/share/postgresql/8.4/contrib/spatial_ref_sys.sql
 exit
 
+wget http://downloads.sourceforge.net/project/s3tools/s3cmd/1.1.0-beta3/s3cmd-1.1.0-beta3.zip
+unzip s3cmd-1.1.0-beta3.zip
+cd s3cmd-1.1.0-beta3
+sudo python setup.py install
+cd ..
+sudo rm -rf s3cmd-1.1.0-beta3
+rm s3cmd-1.1.0-beta3.zip
+

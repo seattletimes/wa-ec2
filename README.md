@@ -115,6 +115,7 @@ sudo pip install virtualenv
 
 ## Conf settings changes
 Postgres conf file - local authentication via password
+
 Apache conf file:
 ```
 <VirtualHost *:80>
